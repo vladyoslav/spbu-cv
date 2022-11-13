@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  flask:
+    build: ./src
+    expose:
+      - ${PORT}
+    volumes:
+      - ./src/${DATABASE_FOLDER}:/${DATABASE_FOLDER}
+    environment:
+      - SQLITE_DATABASE_NAME=${SQLITE_DATABASE_NAME}
+      - DATABASE_FOLDER=${DATABASE_FOLDER}
+      - PORT=${PORT}
+
+  nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
