@@ -1,4 +1,5 @@
 import shutil
+from datetime import datetime
 from pathlib import Path
 
 import sqlalchemy as sa
@@ -7,6 +8,8 @@ from sqlalchemy import func
 
 from config import DATABASE_FOLDER, SQLITE_DATABASE_NAME, SQLITE_DATABASE_BACKUP_NAME
 
+import pytz
+
 db = SQLAlchemy()
 
 
@@ -14,7 +17,7 @@ class Comment(db.Model):
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String(64), nullable=False)
     text = sa.Column(sa.String(512), nullable=False)
-    created_at = sa.Column(sa.DateTime(timezone=True), server_default=func.now())
+    created_at = sa.Column(sa.DateTime(), default=datetime.now().astimezone(pytz.timezone('Europe/Moscow')))
 
 
 comments = [
