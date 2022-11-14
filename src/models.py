@@ -17,12 +17,14 @@ class Comment(db.Model):
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String(64), nullable=False)
     text = sa.Column(sa.String(512), nullable=False)
-    created_at = sa.Column(sa.DateTime(), default=datetime.now().astimezone(pytz.timezone('Europe/Moscow')))
+    created_at = sa.Column(sa.DateTime(timezone=True),
+                           default=lambda: datetime.now().astimezone(pytz.timezone('Europe/Moscow')))
 
 
 comments = [
     {'name': 'Амогус', 'text': 'Это тестовый текст тестового комментария для тестирования тестов'},
 ]
+
 
 def init_db(app, reset=False):
     # Check if db file already exists. If so, backup it
@@ -30,7 +32,8 @@ def init_db(app, reset=False):
 
     if db_file.is_file():
         if reset:
-            shutil.copyfile(f'{DATABASE_FOLDER}/{SQLITE_DATABASE_NAME}', f'{DATABASE_FOLDER}/{SQLITE_DATABASE_BACKUP_NAME}')
+            shutil.copyfile(f'{DATABASE_FOLDER}/{SQLITE_DATABASE_NAME}',
+                            f'{DATABASE_FOLDER}/{SQLITE_DATABASE_BACKUP_NAME}')
         else:
             return
 
