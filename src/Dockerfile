@@ -12,6 +12,4 @@ RUN pip3 install uwsgi
 
 COPY . .
 
-CMD python3 main.py init
-
 CMD ["uwsgi", "wsgi.ini"]
